@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Product } from "../model/Product";
 import { CATALOG_MOCK } from "../model/mocks/PRODUCT_MOCK";
 import { environment } from "../../environments/environment";
+import { firstValueFrom, map, Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -31,11 +32,8 @@ export class CatalogService {
     }
   }
 
-  public getVAT(): Promise<number> {
-    return Promise.resolve(20);
-  }
 
-  public async run(): Promise<void> {
+  public getUsers():Observable<any[]>{
     const users = [
       { id: 1, name: "Vincent Chamayou" },
       { id: 2, name: "Pierre Bizeul" },
@@ -46,6 +44,10 @@ export class CatalogService {
       { id: 7, name: "Mourad Benzaid" },
     ];
 
+    return of(users);
+  }
+
+  public getSalaries():Observable<any[]>{
     const salaries = [
       { id: 1, salary: 5000 },
       { id: 2, salary: 6000 },
@@ -56,18 +58,61 @@ export class CatalogService {
       { id: 7, salary: 8000 },
     ];
 
-    Promise.all([Promise.resolve(users), Promise.resolve(salaries)]).then(
-      ([data1, data2]) => {
-        const mergedData = data1.map((user) => {
-          const salaryObj = data2.find((salary) => salary.id === user.id);
-          return {
-            ...user,
-            salary: salaryObj ? salaryObj.salary : null,
-          };
-        });
-        console.log(mergedData  );
-      },
-    )
+    return of(salaries);
+  }
+
+  public async run(): Promise<void> {
+
+    /*exemple de création d'un observable à la main*/ 
+    // const users$ = new Observable(
+    //   (subscriber)=>{
+
+    //     setTimeout( 
+    //       ()=>{
+    //         subscriber.next(users); 
+    //       }, 
+    //       1000
+    //     ); 
+    //   }
+    // ); 
+
+    /*exemple de créationd d'une promesse à partir d'un observable*/ 
+    // transforme un observable en promesse
+    // const num = await firstValueFrom(users$);
+
+
+    // TODO
+    // todo utiliser this.getSalaries() pour obtenir de façon asynchrone les 
+    // données des salaires et ainsi les combiner avec les users
+
+    this.getUsers().pipe( map(
+      (users:any[])=>{
+
+
+
+        // return users.map((user) => {
+        //   const salaryObj = salaries.find((salary) => salary.id === user.id);
+        //   return {
+        //     ...user,
+        //     salary: salaryObj ? salaryObj.salary : null,
+        //   };
+        // });
+
+        return [];
+      }
+    ) ).subscribe( 
+      {
+        next: (value)=>{
+          console.log(value);
+        },
+        // complete: ()=>{
+        //   console.log("complete");
+        // },
+        // error: (error)=>{
+        //   console.log(error);
+        // }
+      }
+    );
 
   }
 }
