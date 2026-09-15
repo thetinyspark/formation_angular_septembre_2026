@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Product } from '../../model/Product';
-import { CATALOG_MOCK } from '../../model/mocks/PRODUCT_MOCK';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CatalogPipe } from '../../pipes/catalog.pipe';
 import { ProductComponent } from '../product/product.component';
+import { CatalogService } from '../../services/catalog.service';
 
 @Component({
   selector: 'app-catalog',
@@ -18,7 +18,8 @@ export class CatalogComponent {
   public filterPlatform:string = "All";
   public filterPriceMin:number = 0;
   public filterPriceMax:number = 100;
-  public products:Product[] = CATALOG_MOCK;
+  public products:Product[] = [];
+  private catalogService:CatalogService = inject(CatalogService);
 
 
   public getPlatforms():string[]{
@@ -35,5 +36,9 @@ export class CatalogComponent {
       priceMin: this.filterPriceMin,
       priceMax: this.filterPriceMax
     }
+  }
+
+  public async ngOnInit():Promise<void>{
+    this.products = await this.catalogService.getCatalog();
   }
 }

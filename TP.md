@@ -1,8 +1,18 @@
-# TP n°3
+# TP n°4
 
-- Ajoutez une propriété nommée "detailed" sur le ProductComponent
-- Si "detailed" vaut true, alors on affiche l'intégralité des informations
-du produit
-- Si detailed vaut false, alors on affiche seulement, le nom, l'image et le prix du jeu.
 
-- Testez cette option au sein du catalog
+## nouveau service 
+- Créez un service nommé CartService
+- Ce service doit avoir deux fonctionnalités :
+    - La première étant de retourner le contenu du panier 
+    - La deuxième étant d'ajouter un élément au panier 
+
+## dans le product component
+- Dans la vue non détaillée du ProductComponent, ajoutez un bouton 'Add to Cart'
+- Dans votre ProductComponent faites-vous injecter le nouveau service que vous allez créer
+- Quand le bouton 'Add to cart' est cliqué, ajoutez le produit correspondant au panier
+
+
+## nouveau composant / nouvel écran 
+- Créez un composant nommé CartComponent accessible via la navigation
+- Ce composant devra afficher le contenu du panier
