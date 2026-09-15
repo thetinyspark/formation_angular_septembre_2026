@@ -1,6 +1,7 @@
 import { NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Product } from '../../model/Product';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -15,4 +16,10 @@ export class ProductComponent {
 
   @Input()
   public detailed:boolean = false;
+
+  private _cartService:CartService = inject(CartService);
+
+  public addToCart():void{
+    this._cartService.addToCart(this.product!);
+  }
 }

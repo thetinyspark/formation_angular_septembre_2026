@@ -1,0 +1,5 @@
+@for( currentProduct of products; track currentProduct.id){
+    <app-product  [product]="currentProduct" [detailed]="true"></app-product>
+}
+<p>Total HT: {{ totalHT.toFixed(2) }}€</p>
+<p>Total TTC: {{ totalTTC.toFixed(2) }}€</p>

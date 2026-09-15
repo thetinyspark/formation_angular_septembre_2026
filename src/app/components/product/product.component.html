@@ -4,4 +4,9 @@
     <p>Price: {{ product.price.toFixed(2) }}€</p>
     <p *ngIf="detailed">{{ product.description }}</p>
     <p *ngIf="detailed">Platform: {{ product.platform }}</p>
+
+    @if(!detailed){
+        <button (click)="addToCart()">Add To Cart</button>
+    }
+
 </div>

@@ -19,5 +19,4 @@
 </div>
 <app-product  *ngFor="let currentProduct of products | catalog: getFilters()" 
               [product]="currentProduct"
-              [detailed]="true"
               ></app-product>
