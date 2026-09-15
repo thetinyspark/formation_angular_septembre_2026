@@ -10,5 +10,5 @@ import { RouterOutlet, RouterLink } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'MyApp';
+  public title:string = 'My video game store';
 }
