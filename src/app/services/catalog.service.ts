@@ -33,4 +33,29 @@ export class CatalogService {
     }
     
   }
+
+  public getVAT():Promise<number>{
+    return Promise.resolve(20);
+  }
+
+  public async run():Promise<void>{
+    const prom1 = new Promise<number>(
+      (resolve, reject)=>{
+        setTimeout( 
+          ()=>{
+            const randomValue =  Math.round( Math.random() * 100 );
+            resolve(randomValue);
+          }, 
+          1000
+        );
+      }
+    );
+
+
+    const price = await prom1;
+    const vat = await this.getVAT();
+    console.log("Price: ", price);
+    console.log("VAT: ", vat, 1+(vat / 100));
+    console.log("Total: ", (price * (1+(vat / 100))));
+  }
 }

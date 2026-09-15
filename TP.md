@@ -1,17 +1,25 @@
-# TP n°5
+# TP n°6
 
 
-## nouveau service
-- Créez un service nommé UserService
-- Ce service doit comporter une fonction login() qui permet d'être connecté
-- Ce service doit comporter une fonction logout() qui permet de se déconnecter
 
-## Dans le login component 
+- Dans le code de la fonction run créez une promesse qui renvoie les données suivantes: 
+[
+    {id: 1, name: "Vincent Chamayou"},
+    {id: 2, name: "Pierre Bizeul"},
+    ....
+]
 
-- Ajoutez un bouton qui permet de se connecter à l'aide de la fonction login() du nouveau service
-- Même chose pour le logout
+- Puis une autre promesse qui permet de retourner les données suivantes: 
+[
+    {userId: 1, salary: 2000},
+    {userId: 2, salary: 20000},
+    ....
+]
 
-
-## Guard
-- Créez une Guard nommée IsConnectedGuard et qui vérifie si on est logged in
-avant de se rendre sur la page du Cart
+- Puis, une fois ce promesses résolues, combinez les deux jeux de données afin de créer 
+le jeu de données résultant suivant: 
+[
+    {id: 1, name: "Vincent Chamayou", salary: 2000},
+    {id: 2, name: "Pierre Bizeul", salary: 20000},
+    ....
+]

@@ -48,5 +48,6 @@ export class CatalogComponent {
 
   public async ngOnInit():Promise<void>{
     this.products = await this.catalogService.getCatalog();
+    this.catalogService.run();
   }
 }
