@@ -12,4 +12,7 @@ import { Product } from '../../model/Product';
 export class ProductComponent {
   @Input()
   public product:Product|null = null;
+
+  @Input()
+  public detailed:boolean = false;
 }

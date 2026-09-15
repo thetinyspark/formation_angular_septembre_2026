@@ -18,4 +18,6 @@
   <br/>
 </div>
 <app-product  *ngFor="let currentProduct of products | catalog: getFilters()" 
-              [product]="currentProduct"></app-product>
+              [product]="currentProduct"
+              [detailed]="true"
+              ></app-product>
