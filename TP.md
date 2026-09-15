@@ -1,15 +1,11 @@
-# TP n°1
+# TP n°2
 
-- Créer un composant nommé NavComponent
-- Ce composant doit contenir l'ensemble des liens qui vont nous mener vers les différentes sections de notre boutique de jeux
-- Les différentes sections en question sont listées ci-dessous : 
+- Créez un pipe nommé PricePipe
+- Ce pipe recevra deux paramètres en entrées, à savoir, un prix minimum et un prix maximum
+- Il faut bien sur filtrer nos produits en fonction de ce pipe ET du pipe sur les noms
 
-- Home       - HomeComponent
-- Catalogue  - CatalogComponent
-- Panier     - CartComponent
-- Connexion  - LoginComponent
+- Créez un pipe nommé PlatformPipe
+- Ce pipe devra filtrer les produits en fonction d'une plateforme
 
-
-- Faites en sorte d'avoir un lien pour chaque composant
-- Créez les componsants manquants 
-- Ajoutez le routes correspondantes à app.routes.ts
+- Ajoutez les éléments de filtre nécéssaires à votre template en vous basant 
+sur l'exemple du NamePipe
