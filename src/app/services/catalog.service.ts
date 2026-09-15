@@ -56,22 +56,18 @@ export class CatalogService {
       { id: 7, salary: 8000 },
     ];
 
-    const usersPromise = Promise.resolve(users);
-    const salariesPromise = Promise.resolve(salaries);
-
-
-    const data1 = await usersPromise;
-    const data2 = await salariesPromise;
-
-    const mergedData = data1.map(user => {
-      const salaryObj = data2.find(salary => salary.id === user.id);
-      return {
-        ...user,
-        salary: salaryObj ? salaryObj.salary : null
-      };
-    });
-
-    console.log("Merged Data:", mergedData);
+    Promise.all([Promise.resolve(users), Promise.resolve(salaries)]).then(
+      ([data1, data2]) => {
+        const mergedData = data1.map((user) => {
+          const salaryObj = data2.find((salary) => salary.id === user.id);
+          return {
+            ...user,
+            salary: salaryObj ? salaryObj.salary : null,
+          };
+        });
+        console.log(mergedData  );
+      },
+    )
 
   }
 }
