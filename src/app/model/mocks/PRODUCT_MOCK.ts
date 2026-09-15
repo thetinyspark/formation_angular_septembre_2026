@@ -40,5 +40,13 @@ export const CATALOG_MOCK:Product[] = [
     "description": "A FPS game.",
     "img": "./assets/img/kart.png",
     "platform": "N64"
-  }
+  }, 
+  {
+    "id": 6,
+    "name": "Tetris",
+    "price": 59.99,
+    "description": "A classic puzzle game.",
+    "img": "./assets/img/tetris.jpg",
+    "platform": "N64"
+  },
 ];

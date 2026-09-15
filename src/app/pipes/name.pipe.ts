@@ -12,7 +12,7 @@ import { Product } from '../model/Product';
 })
 export class NamePipe implements PipeTransform {
 
-  transform(products: Product[], name: string): Product[] {
+  transform(products: Product[], name: string = ""): Product[] {
     if( name === ""){
       return products;
     }

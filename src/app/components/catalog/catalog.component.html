@@ -1,7 +1,23 @@
 <div class="filters">
+  <label>Nom du produit:</label>
   <input type="text" [(ngModel)]="filterName" placeholder="Filter by name..." />
+  <br/>
+
+  <label>Plateforme:</label>
+  <select [(ngModel)]="filterPlatform">
+    <option *ngFor="let platform of getPlatforms()" [value]="platform">{{ platform }}</option>
+  </select>
+  <br/>
+  
+  <label>Prix minimum:</label>
+  <input type="number" [(ngModel)]="filterPriceMin" />
+  <br/>
+
+  <label>Prix maximum:</label>
+  <input type="number" [(ngModel)]="filterPriceMax"/>
+  <br/>
 </div>
-<div *ngFor="let product of products | name:filterName">
+<div *ngFor="let product of products | catalog: getFilters()">
   <h3>{{ product.name }}</h3>
   <img [src]="product.img" alt="{{ product.name }}" />
   <p>{{ product.description }}</p>
