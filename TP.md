@@ -1,8 +1,15 @@
-- Cloner le dépôt  l'adresse suivante: https://github.com/thetinyspark/formation_angular_septembre_2026
-- Puis ouvrir un terminal et taper la commande npm i (version node ref: 20.10.0)
-- Si l'installation ne se passe pas bien, dézipper le node_modules.zip
-- Ouvrir un terminal et taper la commande ng serve
-- Visualiser le projet à l'adresse : [localhost:4200](https://github.com/thetinyspark/formation_angular_septembre_2026)
+# TP n°1
 
-- Leur accès : https://docadmin.orsys.fr
-- Le mot de passe commun pour cette session : 53RkbhTj
+- Créer un composant nommé NavComponent
+- Ce composant doit contenir l'ensemble des liens qui vont nous mener vers les différentes sections de notre boutique de jeux
+- Les différentes sections en question sont listées ci-dessous : 
+
+- Home       - HomeComponent
+- Catalogue  - CatalogComponent
+- Panier     - CartComponent
+- Connexion  - LoginComponent
+
+
+- Faites en sorte d'avoir un lien pour chaque composant
+- Créez les componsants manquants 
+- Ajoutez le routes correspondantes à app.routes.ts
