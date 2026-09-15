@@ -1,18 +1,17 @@
-# TP n°4
+# TP n°5
 
 
-## nouveau service 
-- Créez un service nommé CartService
-- Ce service doit avoir deux fonctionnalités :
-    - La première étant de retourner le contenu du panier 
-    - La deuxième étant d'ajouter un élément au panier 
+## nouveau service
+- Créez un service nommé UserService
+- Ce service doit comporter une fonction login() qui permet d'être connecté
+- Ce service doit comporter une fonction logout() qui permet de se déconnecter
 
-## dans le product component
-- Dans la vue non détaillée du ProductComponent, ajoutez un bouton 'Add to Cart'
-- Dans votre ProductComponent faites-vous injecter le nouveau service que vous allez créer
-- Quand le bouton 'Add to cart' est cliqué, ajoutez le produit correspondant au panier
+## Dans le login component 
+
+- Ajoutez un bouton qui permet de se connecter à l'aide de la fonction login() du nouveau service
+- Même chose pour le logout
 
 
-## nouveau composant / nouvel écran 
-- Créez un composant nommé CartComponent accessible via la navigation
-- Ce composant devra afficher le contenu du panier
+## Guard
+- Créez une Guard nommé IsConnectedGuard et qui vérifie si on est logged in
+avant de se rendre sur la page du Cart
