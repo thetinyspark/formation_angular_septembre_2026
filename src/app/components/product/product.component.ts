@@ -1,7 +1,6 @@
 import { NgIf } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Product } from '../../model/Product';
-import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -17,9 +16,10 @@ export class ProductComponent {
   @Input()
   public detailed:boolean = false;
 
-  private _cartService:CartService = inject(CartService);
+  @Output()
+  public onAddToCart:EventEmitter<Product|null> = new EventEmitter<Product|null>();
 
   public addToCart():void{
-    this._cartService.addToCart(this.product!);
+    this.onAddToCart.emit(this.product);
   }
 }

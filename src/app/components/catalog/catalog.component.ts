@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CatalogPipe } from '../../pipes/catalog.pipe';
 import { ProductComponent } from '../product/product.component';
 import { CatalogService } from '../../services/catalog.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-catalog',
@@ -20,6 +21,7 @@ export class CatalogComponent {
   public filterPriceMax:number = 100;
   public products:Product[] = [];
   private catalogService:CatalogService = inject(CatalogService);
+  private cartService:CartService = inject(CartService);
 
 
   public getPlatforms():string[]{
@@ -35,6 +37,12 @@ export class CatalogComponent {
       platform: this.filterPlatform,
       priceMin: this.filterPriceMin,
       priceMax: this.filterPriceMax
+    }
+  }
+
+  public addToCart(product:Product|null):void{
+    if(product !== null){
+      this.cartService.addToCart(product);
     }
   }
 
