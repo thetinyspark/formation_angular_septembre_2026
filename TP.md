@@ -1,11 +1,8 @@
-# TP n°2
+# TP n°3
 
-- Créez un pipe nommé PricePipe
-- Ce pipe recevra deux paramètres en entrées, à savoir, un prix minimum et un prix maximum
-- Il faut bien sur filtrer nos produits en fonction de ce pipe ET du pipe sur les noms
+- Ajoutez une propriété nommée "detailed" sur le ProductComponent
+- Si "detailed" vaut true, alors on affiche l'intégralité des informations
+du produit
+- Si detailed vaut false, alors on affiche seulement, le nom, l'image et le prix du jeu.
 
-- Créez un pipe nommé PlatformPipe
-- Ce pipe devra filtrer les produits en fonction d'une plateforme
-
-- Ajoutez les éléments de filtre nécéssaires à votre template en vous basant 
-sur l'exemple du NamePipe
+- Testez cette option au sein du catalog

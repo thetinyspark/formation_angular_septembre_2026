@@ -4,11 +4,12 @@ import { CATALOG_MOCK } from '../../model/mocks/PRODUCT_MOCK';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CatalogPipe } from '../../pipes/catalog.pipe';
+import { ProductComponent } from '../product/product.component';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [NgFor, FormsModule, CatalogPipe],
+  imports: [NgFor, FormsModule, CatalogPipe, ProductComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css'
 })
