@@ -4,6 +4,7 @@ import { CatalogComponent } from './components/catalog/catalog.component';
 import { LoginComponent } from './components/login/login.component';
 import { CartComponent } from './components/cart/cart.component';
 import { notEmptyCartGuard } from './guards/not-empty-cart.guard';
+import { isConnectedGuard } from './guards/is-connected.guard';
 
 const routeConfig: Routes = [
   {
@@ -20,7 +21,7 @@ const routeConfig: Routes = [
     path: 'cart',
     component: CartComponent,
     title: 'Shopping Cart', 
-    canActivate: [notEmptyCartGuard]
+    canActivate: [notEmptyCartGuard, isConnectedGuard]
   },
   {
     path: 'login',

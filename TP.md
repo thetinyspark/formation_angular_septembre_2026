@@ -13,5 +13,5 @@
 
 
 ## Guard
-- Créez une Guard nommé IsConnectedGuard et qui vérifie si on est logged in
+- Créez une Guard nommée IsConnectedGuard et qui vérifie si on est logged in
 avant de se rendre sur la page du Cart
