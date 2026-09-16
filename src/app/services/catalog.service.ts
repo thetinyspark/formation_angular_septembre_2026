@@ -2,7 +2,16 @@ import { Injectable } from "@angular/core";
 import { Product } from "../model/Product";
 import { CATALOG_MOCK } from "../model/mocks/PRODUCT_MOCK";
 import { environment } from "../../environments/environment";
-import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, ReplaySubject, Subject } from "rxjs";
+import {
+  combineLatest,
+  firstValueFrom,
+  forkJoin,
+  map,
+  Observable,
+  of,
+  ReplaySubject,
+  Subject,
+} from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -43,25 +52,7 @@ export class CatalogService {
       { id: 7, name: "Mourad Benzaid" },
     ];
 
-    const users$ = new Subject<any[]>();
-    
-    setTimeout( 
-      ()=>{
-        users$.next([]);
-      }, 
-      3000
-    );
-
-    setTimeout( 
-      ()=>{
-        users$.next(users);
-        users$.complete();
-      }, 
-      5000
-    );
-
-    return users$;
-    // return of(users);
+    return of(users);
   }
 
   public getSalaries(): Observable<any[]> {
@@ -75,13 +66,40 @@ export class CatalogService {
       { id: 7, salary: 8000 },
     ];
 
-    return new Observable( 
-      (sub)=>{
-        sub.next(salaries);
-      }
-    );
+    return of(salaries);
+  }
 
-    // return of(salaries);
+  public getUsersAndSalaries(): Observable<any[]> {
+    /*
+    L'observable de type ReplaySubject permet d'avoir à disposition un observable (hot car non complété par défaut), 
+    qui nous permet de diffuser de la data, depuis l'extérieur de l'observable. 
+    En gros, il s'agit d'un canal de diffusion qui respecte le pattern Observer. 
+
+    Il garde en plus, un historique des données précédemment diffusées. 
+    Lorsqu'on on y souscrit, il rediffuse les données en question.
+    On peut paramétrer la longueur de l'historique à la création du replaysubject
+    */
+
+    const usersWithSalaries$ = new ReplaySubject<any[]>();
+    type usersAndSalariesData = { users: any[]; salaries: any[] };
+
+    // forkJoin attend que les flux soient complétés quoique ce soit
+    // combineLatest attend que tous les flux aient publié au moins une donnée
+    // mais il s'en fiche si les flux ne sont pas complétés.
+    forkJoin({
+      users: this.getUsers(),
+      salaries: this.getSalaries(),
+    })
+      .pipe(
+        map((data: usersAndSalariesData) => {
+          return this.mergeUsersWithSalaries(data.users, data.salaries);
+        }),
+      )
+      .subscribe((data: any[]) => {
+        usersWithSalaries$.next(data);
+      });
+
+    return usersWithSalaries$;
   }
 
   private mergeUsersWithSalaries(users: any[], salaries: any[]): any[] {
@@ -95,34 +113,36 @@ export class CatalogService {
   }
 
   public async run(): Promise<void> {
-    /*
-    L'observable de type ReplaySubject permet d'avoir à disposition un observable (hot car non complété par défaut), 
-    qui nous permet de diffuser de la data, depuis l'extérieur de l'observable. 
-    En gros, il s'agit d'un canal de diffusion qui respecte le pattern Observer. 
+    const obs1 = new Observable( 
+      (sub)=>{
+        let myInterval = setInterval( 
+          ()=>{
+            console.log("---");
+            sub.next( Math.round( Math.random() * 100 ));
+          }, 
+          1000
+        );
 
-    Il garde en plus, un historique des données précédemment diffusées. 
-    Lorsqu'on on y souscrit, il rediffuse les données en question.
-    On peut paramétrer la longueur de l'historique à la création du replaysubject
-    */
-    
-    const usersWithSalaries$ = new ReplaySubject<any[]>();
-    type usersAndSalariesData = {users:any[], salaries:any[]};
+        // cette fonction sera éxécutée au moment où on se désinscrit de l'observable
+        // cette fonction de désinscription sert à compléter le flux et à nettoyer
+        // les éventuelles connexions à des flux extérieurs ou tout autre processus
+        // de diffusion de données au cours du temps ou tout autre mécanisme qui 
+        // pourrait éventuellement empêcher le recyclage de l'observable par le garbage collector
+        return ()=>{
+          console.log("on unsub");
+          sub.complete();
+          clearInterval(myInterval);
+        };
+      }
+    ); 
 
-    // forkJoin attend que les flux soient complétés quoique ce soit
-    // combineLatest attend que tous les flux aient publié au moins une donnée 
-    // mais il s'en fiche si les flux ne sont pas complétés.
-    combineLatest({
-      users: this.getUsers(), 
-      salaries: this.getSalaries()
-    }).pipe(
-      map( 
-        (data:usersAndSalariesData)=>{
-          return this.mergeUsersWithSalaries(data.users, data.salaries);
-        }
-      )
-    ).subscribe(console.log);
+    const subscription = obs1.subscribe(console.log);
 
-
-    // usersWithSalaries$.subscribe(console.log);
+    setTimeout( 
+      ()=>{
+        subscription.unsubscribe();
+      }, 
+      5000
+    );
   }
 }

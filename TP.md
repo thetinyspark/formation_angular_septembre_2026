@@ -1,9 +1,8 @@
-# TP n°8
+# TP n°9
 
 
 ## Au sein de la méthode run du catalogservice
-- Utiliser this.getSalaries() 
-- Utiliser this.getUsers() 
-- Créez un subject qui diffuse les données de getSalaries()
-- Créez un subject qui diffuse les données de getUsers()
-- Créez un subject qui diffuse les données combinées
+- Créez un observable qui diffuse des prix aléatoires toutes les secondes
+- Créez un observable qui diffuse de la tva aléatoitre toutes les 2 secondes
+- Combiner ces flux afin d'obtenir des prix TTC
+- ATTENTION : Faites en sorte de bien nettoyer vos observables à la désinscription
