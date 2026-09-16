@@ -32,8 +32,7 @@ export class CatalogService {
     }
   }
 
-
-  public getUsers():Observable<any[]>{
+  public getUsers(): Observable<any[]> {
     const users = [
       { id: 1, name: "Vincent Chamayou" },
       { id: 2, name: "Pierre Bizeul" },
@@ -47,7 +46,7 @@ export class CatalogService {
     return of(users);
   }
 
-  public getSalaries():Observable<any[]>{
+  public getSalaries(): Observable<any[]> {
     const salaries = [
       { id: 1, salary: 5000 },
       { id: 2, salary: 6000 },
@@ -61,46 +60,44 @@ export class CatalogService {
     return of(salaries);
   }
 
-  public async run(): Promise<void> {
+  private mergeUsersWithSalaries(users: any[], salaries: any[]): any[] {
+    return users.map((user) => {
+      const salaryObj = salaries.find((salary) => salary.id === user.id);
+      return {
+        ...user,
+        salary: salaryObj ? salaryObj.salary : null,
+      };
+    });
+  }
 
+  public async run(): Promise<void> {
     /*
     L'observable de type Subject permet d'avoir à disposition un observable (hot car non complété par défaut), 
     qui nous permet de diffuser de la data, depuis l'extérieur de l'observable. 
     En gros, il s'agit d'un canal de diffusion qui respecte le pattern Observer. 
-    */ 
-    const prices$ = new Subject<number>();
-    const vat$ = new Subject<number>();
-    const pricesTTC$ = new Subject<number>();
+    */
+    const users$ = new Subject<any[]>();
+    const salaries$ = new Subject<any[]>();
+    const usersWithSalaries$ = new Subject<any[]>();
 
-
-    var currentPrice = 0;
-    var currentVAT = 0; 
-
-    prices$.subscribe( 
-      (value:number)=>{
-        currentPrice = value;
-        pricesTTC$.next( currentPrice * 1+(currentVAT/100));
-      }
-    );
-
-    vat$.subscribe( 
-      (value:number)=>{
-        currentVAT = value;
-        pricesTTC$.next( currentPrice * (1+(currentVAT/100)));
-      }
-    );
-
-
-
-    pricesTTC$.subscribe(console.log);
-
-
-
-    prices$.next(100);
-    vat$.next(20);
+    var currentUsers:any[] = [];
+    var currentSalaries:any[] = [];
 
     
 
+    users$.subscribe((users: any[]) => {
+      currentUsers = users;
+      usersWithSalaries$.next( this.mergeUsersWithSalaries(currentUsers, currentSalaries ))
+    });
 
+    salaries$.subscribe((salaries: any[]) => {
+      currentSalaries = salaries;
+      usersWithSalaries$.next( this.mergeUsersWithSalaries(currentUsers, currentSalaries ))
+    });
+
+    
+    this.getUsers().subscribe((users: any[]) => users$.next(users));
+    usersWithSalaries$.subscribe(console.log);
+    this.getSalaries().subscribe((salaries: any[]) => salaries$.next(salaries));
   }
 }
