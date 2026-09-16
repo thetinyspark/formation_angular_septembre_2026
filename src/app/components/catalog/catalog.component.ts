@@ -19,13 +19,13 @@ export class CatalogComponent {
   public filterPlatform:string = "All";
   public filterPriceMin:number = 0;
   public filterPriceMax:number = 100;
-  public products:Product[] = [];
   private catalogService:CatalogService = inject(CatalogService);
   private cartService:CartService = inject(CartService);
+  public products = this.catalogService.products;
 
 
   public getPlatforms():string[]{
-    let platforms:string[] = this.products.map((p:Product)=>p.platform);
+    let platforms:string[] = this.products().map((p:Product)=>p.platform);
     platforms = Array.from(new Set(platforms));
     platforms.unshift("All");
     return platforms;
@@ -46,8 +46,7 @@ export class CatalogComponent {
     }
   }
 
-  public async ngOnInit():Promise<void>{
-    this.products = await this.catalogService.getCatalog();
-    this.catalogService.run();
+  public ngOnInit():void{
+    this.catalogService.refresh();
   }
 }

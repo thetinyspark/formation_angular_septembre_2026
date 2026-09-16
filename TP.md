@@ -1,8 +1,8 @@
-# TP n°9
+# TP n°10
 
 
-## Au sein de la méthode run du catalogservice
-- Créez un observable qui diffuse des prix aléatoires toutes les secondes
-- Créez un observable qui diffuse de la tva aléatoitre toutes les 2 secondes
-- Combiner ces flux afin d'obtenir des prix TTC
-- ATTENTION : Faites en sorte de bien nettoyer vos observables à la désinscription
+## Au sein du service CatalogService
+
+- Créez un signal privé nommé "_platforms" qui permet d'obtenir la liste de toutes les plateformes
+- Créez également un signal public en readOnly et utilisez-le dans le catalogComponent pour afficher les plateformes
+- Virez la méthode getPlatforms() du CatalogComponent
