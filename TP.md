@@ -1,23 +1,19 @@
-# TP n°11
+# TP n°12
 
 
-## Créez un composant LoadingScreen
-- Ce composant LoadingScreen doit être toujours présent sur l'application
-- Il n'est visible que si une opération de chargement est en cours
-- Pour savoir si une opération de chargement est en cours, le composant
-lit une valeur dans un signal
+Transformer le CartService
+
+- Faites en sorte que le panier soit disponible sous forme d'un signal readonly
+- Faites en sorte de charger le panier avant d'atterrir sur la page CartComponent
+( en passant par un resolver, n'hésitez pas à utiliser le loadingScreenService)
+- Faites en sorte que les prix totaux et la TVA soient accessibles sous forme de signal
 
 
-## Créez un service LoadingScreenService
-- Ce service n'a besoin que de deux fonctionnalités
-- Une fonctionnalité setLoading(boolean)
-- Une fonctionnalité isLoading: Signal<boolean>
+Bonus
 
-C'est ce dernier signal que le composant utilise
+- Faites en sorte que sur le cartService, lorsque vous ajoutez un produit, cela 
+passe par un appel en POST vers une URI
+- Faites en sorte que sur le cartService, les données du panier soient obtenues via
+un appel à une URI aussi 
 
-
-## Au sein du CatalogResolver
-- Lorsque vous lancez l'obtention des données avec refresh()
-- utilisez le LoadingScreenService afin de le passer en mode loading
-- une fois les données obtenues faites-en sorte que le service ne soit plus
-en mode loading
+- Créez un interceptor qui intercepte ces deux appels et qui stocke/restitue les produits au sein du localStorage
