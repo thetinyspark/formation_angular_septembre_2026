@@ -1,23 +1,54 @@
-import { Injectable } from "@angular/core";
+import { computed, effect, Injectable, Signal, signal } from "@angular/core";
 import { Product } from "../model/Product";
-import { CATALOG_MOCK } from "../model/mocks/PRODUCT_MOCK";
 import { environment } from "../../environments/environment";
-import {
-  combineLatest,
-  firstValueFrom,
-  forkJoin,
-  map,
-  Observable,
-  of,
-  ReplaySubject,
-  Subject,
-} from "rxjs";
+import {Observable} from "rxjs";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Injectable({
   providedIn: "root",
 })
 export class CatalogService {
-  constructor() {}
+
+  private _price = this.getPricesSignal()
+  private _tva = signal<number>(0);
+  public ttc = computed<number>(
+    ()=>{
+      return this._price() * (1+(this._tva()/100));
+    }
+  );
+
+  public tva = this._tva.asReadonly();
+  // public price = this._price.asReadonly();
+
+  constructor() {
+    effect(
+      ()=>{
+        console.log("ttc: "+this.ttc());
+      }
+    )
+  }
+
+  public getPricesSignal():Signal<number>{
+    return toSignal(this.getPrices()) as Signal<number>;
+  }
+
+  public getPrices(){
+    return new Observable<number>( 
+      (sub)=>{
+        let myInterval = setInterval(
+          ()=>{
+            const rand = Math.round( Math.random() * 100);
+            sub.next( rand );
+            if( rand > 50 ){
+              clearInterval(myInterval);
+              sub.complete();
+            }
+          }, 
+          1000
+        );
+      }
+    );
+  }
 
   public async getCatalog(): Promise<Product[]> {
     // on utilise cette version si on veut les données bouchonnées
@@ -41,38 +72,8 @@ export class CatalogService {
     }
   }
 
-  public getPrices(): Observable<number> {
-    return new Observable( 
-      (sub)=>{
-        let myInterval = setInterval( ()=>sub.next( Math.round(Math.random() * 100)), 1000);
-        return ()=>clearInterval(myInterval);
-      }
-    );
-  }
-
-  public getVats(): Observable<number> {
-    return new Observable( 
-      (sub)=>{
-        let myInterval = setInterval( ()=>sub.next( Math.round(Math.random() * 10)), 1000);
-        return ()=>clearInterval(myInterval);
-      }
-    );
-  }
-
-  public getPricesTTC(): Observable<number> {
-   return combineLatest({prices:this.getPrices(), vats:this.getVats()}).pipe(
-    map( 
-      ( data:any)=>{
-        return data.prices * (1+(data.vats/100));
-      }
-    )
-   );
-  }
-
-
-
   public async run(): Promise<void> {
-    const subscription = this.getPricesTTC().subscribe(console.log);
-    setTimeout( ()=>subscription.unsubscribe(), 5000);
+    // this._price.set(100);
+    this._tva.set(20);
   }
 }
