@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Product } from "../model/Product";
 import { CATALOG_MOCK } from "../model/mocks/PRODUCT_MOCK";
 import { environment } from "../../environments/environment";
-import { firstValueFrom, map, Observable, of, Subject } from "rxjs";
+import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, ReplaySubject, Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -43,7 +43,25 @@ export class CatalogService {
       { id: 7, name: "Mourad Benzaid" },
     ];
 
-    return of(users);
+    const users$ = new Subject<any[]>();
+    
+    setTimeout( 
+      ()=>{
+        users$.next([]);
+      }, 
+      3000
+    );
+
+    setTimeout( 
+      ()=>{
+        users$.next(users);
+        users$.complete();
+      }, 
+      5000
+    );
+
+    return users$;
+    // return of(users);
   }
 
   public getSalaries(): Observable<any[]> {
@@ -57,7 +75,13 @@ export class CatalogService {
       { id: 7, salary: 8000 },
     ];
 
-    return of(salaries);
+    return new Observable( 
+      (sub)=>{
+        sub.next(salaries);
+      }
+    );
+
+    // return of(salaries);
   }
 
   private mergeUsersWithSalaries(users: any[], salaries: any[]): any[] {
@@ -72,32 +96,33 @@ export class CatalogService {
 
   public async run(): Promise<void> {
     /*
-    L'observable de type Subject permet d'avoir à disposition un observable (hot car non complété par défaut), 
+    L'observable de type ReplaySubject permet d'avoir à disposition un observable (hot car non complété par défaut), 
     qui nous permet de diffuser de la data, depuis l'extérieur de l'observable. 
     En gros, il s'agit d'un canal de diffusion qui respecte le pattern Observer. 
+
+    Il garde en plus, un historique des données précédemment diffusées. 
+    Lorsqu'on on y souscrit, il rediffuse les données en question.
+    On peut paramétrer la longueur de l'historique à la création du replaysubject
     */
-    const users$ = new Subject<any[]>();
-    const salaries$ = new Subject<any[]>();
-    const usersWithSalaries$ = new Subject<any[]>();
-
-    var currentUsers:any[] = [];
-    var currentSalaries:any[] = [];
-
     
+    const usersWithSalaries$ = new ReplaySubject<any[]>();
+    type usersAndSalariesData = {users:any[], salaries:any[]};
 
-    users$.subscribe((users: any[]) => {
-      currentUsers = users;
-      usersWithSalaries$.next( this.mergeUsersWithSalaries(currentUsers, currentSalaries ))
-    });
+    // forkJoin attend que les flux soient complétés quoique ce soit
+    // combineLatest attend que tous les flux aient publié au moins une donnée 
+    // mais il s'en fiche si les flux ne sont pas complétés.
+    combineLatest({
+      users: this.getUsers(), 
+      salaries: this.getSalaries()
+    }).pipe(
+      map( 
+        (data:usersAndSalariesData)=>{
+          return this.mergeUsersWithSalaries(data.users, data.salaries);
+        }
+      )
+    ).subscribe(console.log);
 
-    salaries$.subscribe((salaries: any[]) => {
-      currentSalaries = salaries;
-      usersWithSalaries$.next( this.mergeUsersWithSalaries(currentUsers, currentSalaries ))
-    });
 
-    
-    this.getUsers().subscribe((users: any[]) => users$.next(users));
-    usersWithSalaries$.subscribe(console.log);
-    this.getSalaries().subscribe((salaries: any[]) => salaries$.next(salaries));
+    // usersWithSalaries$.subscribe(console.log);
   }
 }
