@@ -1,5 +1,9 @@
-# TP n°7
+# TP n°8
 
 
 ## Au sein de la méthode run du catalogservice
-- Utiliser this.getSalaries() pour obtenir de façon asynchrone les données des salaires et ainsi les combiner avec les users obtenus à l'aide this.getUsers();
+- Utiliser this.getSalaries() 
+- Utiliser this.getUsers() 
+- Créez un subject qui diffuse les données de getSalaries()
+- Créez un subject qui diffuse les données de getUsers()
+- Créez un subject qui diffuse les données combinées

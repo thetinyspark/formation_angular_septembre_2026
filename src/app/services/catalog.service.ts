@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Product } from "../model/Product";
 import { CATALOG_MOCK } from "../model/mocks/PRODUCT_MOCK";
 import { environment } from "../../environments/environment";
-import { firstValueFrom, map, Observable, of } from "rxjs";
+import { firstValueFrom, map, Observable, of, Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -63,54 +63,44 @@ export class CatalogService {
 
   public async run(): Promise<void> {
 
-    /*exemple de création d'un observable à la main*/ 
-    // const users$ = new Observable(
-    //   (subscriber)=>{
-
-    //     setTimeout( 
-    //       ()=>{
-    //         subscriber.next(users); 
-    //       }, 
-    //       1000
-    //     ); 
-    //   }
-    // ); 
-
-    /*exemple de création d'une promesse à partir d'un observable*/ 
-    // transforme un observable en promesse
-    // const num = await firstValueFrom(users$);
+    /*
+    L'observable de type Subject permet d'avoir à disposition un observable (hot car non complété par défaut), 
+    qui nous permet de diffuser de la data, depuis l'extérieur de l'observable. 
+    En gros, il s'agit d'un canal de diffusion qui respecte le pattern Observer. 
+    */ 
+    const prices$ = new Subject<number>();
+    const vat$ = new Subject<number>();
+    const pricesTTC$ = new Subject<number>();
 
 
-    // TODO
-    // todo utiliser this.getSalaries() pour obtenir de façon asynchrone les 
-    // données des salaires et ainsi les combiner avec les users
+    var currentPrice = 0;
+    var currentVAT = 0; 
 
-    this.getUsers().pipe( map(
-      async (users:any[])=>{
-
-        const salaries = await firstValueFrom(this.getSalaries());
-
-        return users.map((user) => {
-          const salaryObj = salaries.find((salary) => salary.id === user.id);
-          return {
-            ...user,
-            salary: salaryObj ? salaryObj.salary : null,
-          };
-        });
-      }
-    ) ).subscribe( 
-      {
-        next: (value)=>{
-          console.log(value);
-        },
-        // complete: ()=>{
-        //   console.log("complete");
-        // },
-        // error: (error)=>{
-        //   console.log(error);
-        // }
+    prices$.subscribe( 
+      (value:number)=>{
+        currentPrice = value;
+        pricesTTC$.next( currentPrice * 1+(currentVAT/100));
       }
     );
+
+    vat$.subscribe( 
+      (value:number)=>{
+        currentVAT = value;
+        pricesTTC$.next( currentPrice * (1+(currentVAT/100)));
+      }
+    );
+
+
+
+    pricesTTC$.subscribe(console.log);
+
+
+
+    prices$.next(100);
+    vat$.next(20);
+
+    
+
 
   }
 }
