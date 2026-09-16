@@ -5,7 +5,7 @@
 
   <label>Plateforme:</label>
   <select [(ngModel)]="filterPlatform">
-    <option *ngFor="let platform of getPlatforms()" [value]="platform">{{ platform }}</option>
+    <option *ngFor="let platform of platforms()" [value]="platform">{{ platform }}</option>
   </select>
   <br/>
   

@@ -5,4 +5,5 @@ export class Product{
     public description:string = '';
     public img:string = '';
     public platform:string = '';
+    public promo?:number = 0;
 }

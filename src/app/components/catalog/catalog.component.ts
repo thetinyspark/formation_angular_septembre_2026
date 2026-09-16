@@ -22,14 +22,8 @@ export class CatalogComponent {
   private catalogService:CatalogService = inject(CatalogService);
   private cartService:CartService = inject(CartService);
   public products = this.catalogService.products;
+  public platforms = this.catalogService.platforms;
 
-
-  public getPlatforms():string[]{
-    let platforms:string[] = this.products().map((p:Product)=>p.platform);
-    platforms = Array.from(new Set(platforms));
-    platforms.unshift("All");
-    return platforms;
-  }
 
   public getFilters():any{
     return {
