@@ -6,6 +6,7 @@ import { CatalogPipe } from '../../pipes/catalog.pipe';
 import { ProductComponent } from '../product/product.component';
 import { CatalogService } from '../../services/catalog.service';
 import { CartService } from '../../services/cart.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-catalog',
@@ -15,14 +16,16 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './catalog.component.css'
 })
 export class CatalogComponent {
+  private cartService:CartService = inject(CartService);
+  private _route:ActivatedRoute = inject(ActivatedRoute);
+
   public filterName:string = "";
   public filterPlatform:string = "All";
   public filterPriceMin:number = 0;
   public filterPriceMax:number = 100;
-  private catalogService:CatalogService = inject(CatalogService);
-  private cartService:CartService = inject(CartService);
-  public products = this.catalogService.products;
-  public platforms = this.catalogService.platforms;
+  public products = this._route.snapshot.data['catalog']['products'];
+  public platforms = this._route.snapshot.data['catalog']['platforms'];
+  
 
 
   public getFilters():any{
@@ -41,6 +44,6 @@ export class CatalogComponent {
   }
 
   public ngOnInit():void{
-    this.catalogService.refresh();
+    console.log(this._route.snapshot.data);
   }
 }

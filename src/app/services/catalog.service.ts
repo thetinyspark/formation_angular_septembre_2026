@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { Product } from "../model/Product";
 import { environment } from "../../environments/environment";
-import {firstValueFrom, ReplaySubject, Subject} from "rxjs";
+import {delay, firstValueFrom, of, ReplaySubject, Subject} from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { toSignal } from "@angular/core/rxjs-interop";
 
@@ -33,6 +33,10 @@ export class CatalogService {
 
   public async refresh(): Promise<void> {
     try{
+      // simule du lag réseau
+      await firstValueFrom(of(0).pipe(delay(5000)));
+
+      // obtient les données
       const products = await firstValueFrom(this._httpClient.get<Product[]>(environment.catalogURI+"?rand="+Math.random()));
       this._products.set(products);
       this._platforms.set(this._getPlatforms());
@@ -42,10 +46,5 @@ export class CatalogService {
       this._products.set([]);
       this._platforms.set([]);
     }
-
-    // setTimeout( 
-    //   ()=> this.refresh(), 
-    //   10000
-    // );
   }
 }
