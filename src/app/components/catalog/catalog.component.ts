@@ -4,7 +4,6 @@ import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CatalogPipe } from '../../pipes/catalog.pipe';
 import { ProductComponent } from '../product/product.component';
-import { CatalogService } from '../../services/catalog.service';
 import { CartService } from '../../services/cart.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -26,8 +25,6 @@ export class CatalogComponent {
   public products = this._route.snapshot.data['catalog']['products'];
   public platforms = this._route.snapshot.data['catalog']['platforms'];
   
-
-
   public getFilters():any{
     return {
       name: this.filterName,
@@ -41,9 +38,5 @@ export class CatalogComponent {
     if(product !== null){
       this.cartService.addToCart(product);
     }
-  }
-
-  public ngOnInit():void{
-    console.log(this._route.snapshot.data);
   }
 }
