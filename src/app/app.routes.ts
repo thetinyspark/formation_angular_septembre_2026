@@ -6,6 +6,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { notEmptyCartGuard } from './guards/not-empty-cart.guard';
 import { isConnectedGuard } from './guards/is-connected.guard';
 import { catalogResolver } from './resolvers/catalog.resolver';
+import { cartResolver } from './resolvers/cart.resolver';
 
 const routeConfig: Routes = [
   {
@@ -23,6 +24,7 @@ const routeConfig: Routes = [
     path: 'cart',
     component: CartComponent,
     title: 'Shopping Cart', 
+    resolve: {cart: cartResolver },
     canActivate: [notEmptyCartGuard, isConnectedGuard]
   },
   {

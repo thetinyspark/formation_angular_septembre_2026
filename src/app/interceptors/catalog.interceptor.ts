@@ -7,7 +7,7 @@ import { delay, map, Observable, of } from "rxjs";
 import { Product } from "../model/Product";
 
 export const catalogInterceptor: HttpInterceptorFn = (req, next) => {
-  
+
   if (req.method === "GET" && req.url.includes(environment.catalogURI)) {
     return new Observable<HttpResponse<Product[]>>((sub) => {
       window.fetch(environment.catalogURI).then((rep) => {
