@@ -76,7 +76,7 @@ export class CatalogService {
     //   }
     // ); 
 
-    /*exemple de créationd d'une promesse à partir d'un observable*/ 
+    /*exemple de création d'une promesse à partir d'un observable*/ 
     // transforme un observable en promesse
     // const num = await firstValueFrom(users$);
 
@@ -86,19 +86,17 @@ export class CatalogService {
     // données des salaires et ainsi les combiner avec les users
 
     this.getUsers().pipe( map(
-      (users:any[])=>{
+      async (users:any[])=>{
 
+        const salaries = await firstValueFrom(this.getSalaries());
 
-
-        // return users.map((user) => {
-        //   const salaryObj = salaries.find((salary) => salary.id === user.id);
-        //   return {
-        //     ...user,
-        //     salary: salaryObj ? salaryObj.salary : null,
-        //   };
-        // });
-
-        return [];
+        return users.map((user) => {
+          const salaryObj = salaries.find((salary) => salary.id === user.id);
+          return {
+            ...user,
+            salary: salaryObj ? salaryObj.salary : null,
+          };
+        });
       }
     ) ).subscribe( 
       {
