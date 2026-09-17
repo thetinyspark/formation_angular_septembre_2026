@@ -17,17 +17,12 @@ export class LoginComponent {
   public form = this._builder.group( 
     {
       email: ["admin@admin.com", [Validators.required, Validators.email]],
-      password: ["admin1234", [Validators.required]],
+      password: ["admin1234", [Validators.required, this.validatePassword]],
     }
   );
 
   public validatePassword(control:AbstractControl){
-    // ici implémentez un bout de code qui vérifie
-    // si le password contient au minimum 8 caractères
-
-    // si jamais c'est valide, alors renvoyez null
-    // sinon, renvoyez un object avec des paires clés valeurs
-    // les clés étant les noms des erreurs, les valeurs, leur description
+    return (control.value.length >= 8) ? null : {tooShortPassword:true};
   }
 
   public login():void{
