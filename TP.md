@@ -1,5 +1,4 @@
-# TP n°15
+# TP n°16
 
 
-Créer des tests dans la test suite du catalog component permettant 
-de vérifier si les pipes platform, name et price fonctionnent.
+Implémentez le validator customisé validatePassword dans le LoginComponent

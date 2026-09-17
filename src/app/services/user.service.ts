@@ -1,28 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private _isLoggedIn:boolean = false;
+  private _isLoggedIn = signal<boolean>(false);
+  public isLoggedIn = this._isLoggedIn.asReadonly();
   constructor() { }
 
   public login(username:string, password:string):boolean{
-    if(username === "admin" && password === "admin"){
-      this._isLoggedIn = true;
+    if(username === "admin@admin.com" && password === "admin1234"){
+      this._isLoggedIn.set(true);
     }
     else{
-      this._isLoggedIn = false;
+      this._isLoggedIn.set(false);
     }
-    return this._isLoggedIn;
+    return this._isLoggedIn();
   }
 
   public logout():void{
-    this._isLoggedIn = false;
+    this._isLoggedIn.set(false);
   }
 
-  public isLoggedIn():boolean{
-    return this._isLoggedIn;
-  }
 }
