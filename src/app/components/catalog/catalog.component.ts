@@ -18,6 +18,7 @@ export class CatalogComponent {
   private cartService:CartService = inject(CartService);
   private _route:ActivatedRoute = inject(ActivatedRoute);
 
+  public productDetailed:boolean = false;
   public filterName:string = "";
   public filterPlatform:string = "All";
   public filterPriceMin:number = 0;
