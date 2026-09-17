@@ -13,10 +13,6 @@ import { Product } from '../model/Product';
 export class NamePipe implements PipeTransform {
 
   transform(products: Product[], name: string = ""): Product[] {
-    if( name === ""){
-      return products;
-    }
-
     // ici, on filtre les produits en fonction du nom passé en paramètre.
     return products.filter (
       (currentProduct:Product)=>{
