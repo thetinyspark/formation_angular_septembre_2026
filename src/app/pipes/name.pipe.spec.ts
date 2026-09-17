@@ -25,14 +25,11 @@ fdescribe("NamePipe Test suite", () => {
     { id:5, products: CATALOG_MOCK, expectedValue: CATALOG_MOCK.length, filter: "" }
   ].forEach(
     (dataTest) => {
-
-
-      it("should filter products by their name, id="+dataTest.id, () => {
+      it(`{${dataTest.id}} should filter products by their name`, () => {
         const filtered = pipe.transform(dataTest.products, dataTest.filter);
         expect(filtered.length).toEqual(dataTest.expectedValue);
+
       });
-
-
     },
   );
 });
