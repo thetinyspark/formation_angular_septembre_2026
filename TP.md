@@ -1,8 +1,4 @@
-# TP n°13
+# TP n°14
 
 
-Créez des suites de tests pour les pipes suivants: 
-
-- PricePipe
-- CatalogPipe
-- PlatformPipe
+Tester les méthodes du CatalogService
