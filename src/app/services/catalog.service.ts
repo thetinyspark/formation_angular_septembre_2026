@@ -19,7 +19,7 @@ export class CatalogService {
 
 
   constructor() {
-    this.refresh();
+    // this.refresh();
   }
 
   private _getPlatforms():string[]{
