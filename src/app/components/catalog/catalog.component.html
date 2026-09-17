@@ -19,5 +19,6 @@
 </div>
 <app-product  *ngFor="let currentProduct of products() | catalog: getFilters()" 
               (onAddToCart)="addToCart($event)"
-              [product]="currentProduct"
+              [product]="currentProduct" 
+              class="product"
               ></app-product>
