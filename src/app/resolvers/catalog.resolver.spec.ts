@@ -2,9 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
 import { catalogResolver } from './catalog.resolver';
+import { Product } from '../model/Product';
+import { Signal } from '@angular/core';
 
 describe('catalogResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
+  const executeResolver: ResolveFn<{
+    products: Signal<Product[]>,
+    platforms: Signal<string[]>
+  }> = (...resolverParameters) => 
       TestBed.runInInjectionContext(() => catalogResolver(...resolverParameters));
 
   beforeEach(() => {

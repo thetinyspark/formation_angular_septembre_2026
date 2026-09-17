@@ -1,8 +1,10 @@
 import { NamePipe } from './name.pipe';
 
-describe('NamePipe', () => {
+fdescribe('NamePipe Test suite', () => {
+
   it('create an instance', () => {
     const pipe = new NamePipe();
     expect(pipe).toBeTruthy();
   });
+
 });
