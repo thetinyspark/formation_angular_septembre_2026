@@ -33,13 +33,10 @@ export class CartService {
 
   constructor() { }
 
-  public addToCart( product:Product):void
+  public async addToCart( product:Product):Promise<void>
   {
-    this._http.post(environment.cartURI, product).subscribe(
-      ()=>{
-        this.refresh();
-      }
-    );
+    await firstValueFrom(this._http.post(environment.cartURI, product));
+    this.refresh();
   }
 
   public async refresh():Promise<void>{
